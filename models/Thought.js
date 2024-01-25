@@ -5,7 +5,6 @@ const reactionSchema = new Schema({
         type: Schema.Types.ObjectId,
         default: new Types.ObjectId()
     },
-
     username: {
         type: String,
         required: true
@@ -15,14 +14,7 @@ const reactionSchema = new Schema({
         required: true,
         maxlength: 280
       },
-
-
     })
-
-
-
-
-
 
 const thoughtSchema = new Schema(
   {
@@ -55,8 +47,5 @@ const thoughtSchema = new Schema(
 
   )
 
- thoughtSchema.virtual('formatCreatedAt').get(function () {
-    return this.comments.length;
-  }); 
 
 module.exports = thoughtSchema;
