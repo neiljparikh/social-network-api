@@ -65,9 +65,9 @@ const sampleUsernames = [
     return results;
   };
 
-  const getRandomThought = () => {
+  const getRandomThoughts = () => {
     const results = [];
-    for (i = 0; i < thoughts.length; i++) {
+    for (i = 0; i < sampleThoughts.length; i++) {
       results.push({
         thoughtText: getRandomArrItem(sampleThoughts),
         username: getRandomArrItem(sampleUsernames),
@@ -79,7 +79,7 @@ const sampleUsernames = [
     
   module.exports = {
     getEmail,
-    getRandomThought,
+    getRandomThoughts,
     getRandomUsername,
     getRandomReaction,
     getUsers

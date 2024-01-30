@@ -1,6 +1,6 @@
 const connection = require('../config/connection');
 const {Thought, User} = require('../models');
-const {getEmail, getRandomThought, getRandomUsername, getRandomReaction} = require('./data')
+const {getEmail, getRandomThoughts, getRandomReaction, getRandomUsername, getUsers} = require('./data')
 
 connection.on("error", (err) => err);
 
@@ -20,10 +20,11 @@ connection.once("open", async () => {
     if (thoughtCheck.length) {
       await connection.dropCollection("thoughts");
     }
-})
+
 
   //create seed for thoughts
-  const thoughts = getRandomThoughts();
+  const thoughtData = getRandomThoughts();
+
 
   //add them to collection
 
@@ -42,7 +43,10 @@ connection.once("open", async () => {
 
   // insert seed data into collections
   await User.collection.insertMany(users);
-  await Thought.collection.insertMany(thoughts);
+  await Thought.collection.insertMany(thoughtData);
+
+  const thoughts = await Thought.find()
+
 
   //for all the thoughts -> findandupdate user model to add the thought
   for (let i = 0; i < thoughts.length; i++) {
@@ -51,20 +55,27 @@ connection.once("open", async () => {
       { username: thoughts[i].username },
       {
         $addToSet: {
-          thoughts: [thoughts[i]],
+          thoughts: [thoughts[i]._id],
         },
       }
     );
   }
 
   for (let i = 0; i < allUsernames.length; i++) {
-    // console.log(thoughts[i].username);
-    await User.findOneAndUpdate(
-      { username: thoughts[i].username },
-      {
-        $addToSet: {
-          friends: getRandomUsername(),
-        },
-      }
-    );
+    const currentUser = await User.findOne({ username: allUsernames[i] });
+    const randomFriend = getRandomUsername();
+
+    // Make sure the friend is not the current user and is not already in friends
+    if (randomFriend.username !== currentUser.username && !currentUser.friends.includes(randomFriend._id)) {
+      await User.findOneAndUpdate(
+        { username: currentUser.username },
+        {
+          $addToSet: {
+            friends: randomFriend._id,
+          },
+        }
+      );
+    }
   }
+
+});
