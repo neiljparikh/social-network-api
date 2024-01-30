@@ -43,6 +43,7 @@ const sampleUsernames = [
 // Assigns email to user
   const getEmail = (user) => `${user}@email.com`;
 
+  const getUsers = () => sampleUsernames;
 // Get random username
   const getRandomUsername = () => getRandomArrItem(sampleUsernames)
 
@@ -68,19 +69,19 @@ const sampleUsernames = [
     const results = [];
     for (i = 0; i < thoughts.length; i++) {
       results.push({
-        thoughtText: thoughts[i],
-        username: getRandomArrItem(allUsernames),
-        reactions: [...createReactions(2)],
+        thoughtText: getRandomArrItem(sampleThoughts),
+        username: getRandomArrItem(sampleUsernames),
+        reactions: [...getRandomReaction(3)],
       });
     }
     return results;
   };
-  
-
-  
+    
   module.exports = {
     getEmail,
     getRandomThought,
     getRandomUsername,
-    getRandomReaction
+    getRandomReaction,
+    getUsers
   };
+

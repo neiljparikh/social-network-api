@@ -21,3 +21,50 @@ connection.once("open", async () => {
       await connection.dropCollection("thoughts");
     }
 })
+
+  //create seed for thoughts
+  const thoughts = getRandomThoughts();
+
+  //add them to collection
+
+  //create seed for users
+  const allUsernames = getUsers();
+  const users = [];
+  for (let i = 0; i < allUsernames.length; i++) {
+    const username = allUsernames[i];
+    const email = getEmail(username);
+    users.push({
+      username,
+      email,
+    });
+  }
+
+
+  // insert seed data into collections
+  await User.collection.insertMany(users);
+  await Thought.collection.insertMany(thoughts);
+
+  //for all the thoughts -> findandupdate user model to add the thought
+  for (let i = 0; i < thoughts.length; i++) {
+    // console.log(thoughts[i].username);
+    await User.findOneAndUpdate(
+      { username: thoughts[i].username },
+      {
+        $addToSet: {
+          thoughts: [thoughts[i]],
+        },
+      }
+    );
+  }
+
+  for (let i = 0; i < allUsernames.length; i++) {
+    // console.log(thoughts[i].username);
+    await User.findOneAndUpdate(
+      { username: thoughts[i].username },
+      {
+        $addToSet: {
+          friends: getRandomUsername(),
+        },
+      }
+    );
+  }
