@@ -47,7 +47,7 @@ const sampleUsernames = [
   const getRandomUsername = () => getRandomArrItem(sampleUsernames)
 
 // Create sampleReactions
-  const createSampleReactions = (int) => {
+  const getRandomReaction = (int) => {
     if (int === 1) {
       return {
         reactionBody: getRandomArrItem(sampleReactions),
@@ -82,4 +82,5 @@ const sampleUsernames = [
     getEmail,
     getRandomThought,
     getRandomUsername,
+    getRandomReaction
   };
