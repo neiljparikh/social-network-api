@@ -1,8 +1,10 @@
 const express = require('express');
-//gives you the ability to open the DB on server open
 const db = require('./config/connection');
+const routes = require("./routes")
+//gives you the ability to open the DB on server open
 
 
+// APP/PORT
 const PORT = process.env.PORT || 3001;
 const app = express();
 
