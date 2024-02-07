@@ -62,9 +62,9 @@ connection.once("open", async () => {
   }
 
   for (let i = 0; i < allUsernames.length; i++) {
-    const currentUser = await User.findOne({ username: allUsernames[i] });
-    const randomFriend = getRandomUsername();
-
+    const randomUsername = getRandomUsername();
+    const randomFriend = await User.findOne({ username: randomUsername });
+  
     // Make sure the friend is not the current user and is not already in friends
     if (randomFriend.username !== currentUser.username && !currentUser.friends.includes(randomFriend._id)) {
       await User.findOneAndUpdate(
