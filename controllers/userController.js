@@ -13,8 +13,8 @@ async getUsers(req, res) {
 //get one user
 async getOneUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId })
-        .select("-__v")
+    const userId = mongoose.Types.ObjectId(req.params.id); 
+     const user = await User.findOne({ _id: userId })
         .populate("thoughts")
         .populate("friends");
 
@@ -41,7 +41,7 @@ async getOneUser(req, res) {
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
-        { _id: req.params.userId },
+        { _id: req.params.id },
         { $set: req.body },
         { runValidators: true, new: true }
       );
@@ -62,7 +62,7 @@ async getOneUser(req, res) {
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({
-        _id: req.params.userId,
+        _id: req.params._id,
       });
 
       //delete associated thoughts
